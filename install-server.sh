@@ -164,62 +164,62 @@ echo "➡️ Manual update: sudo $UPDATE_SCRIPT"
 
 
 
-# ===========================
-# 9. Gọi API cài đặt N8N (/api/n8n/install)
-# ===========================
+# # ===========================
+# # 9. Gọi API cài đặt N8N (/api/n8n/install)
+# # ===========================
 
-echo "⏳ Đợi 10 giây cho agent khởi động..."
-sleep 10
-# 🌐 Lấy domain từ hostname đầy đủ
-DOMAIN=$(hostname -f)
-EMAIL="noreply@tino.org"
-# 🌐 Lấy IP public của máy chủ
-SERVER_IP=$(curl -s https://api.ipify.org)
-echo "🌐 Tên miền sử dụng: $DOMAIN"
-echo "🌐 IP máy chủ: $SERVER_IP"
-# 🔁 Kiểm tra DNS hostname trỏ đúng IP public
-SUCCESS=0
-for i in {1..100}; do
-    # DOMAIN_IP=$(dig +short "$DOMAIN" | tail -n1)
-    DOMAIN_IP=$(dig +short A "$DOMAIN" @8.8.8.8 | grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}' | head -n 1)
-    if [[ "$DOMAIN_IP" == "$SERVER_IP" ]]; then
-        echo "✅ DNS trỏ đúng sau $i lần thử: $DOMAIN → $DOMAIN_IP"
-        SUCCESS=1
-        break
-    else
-        echo "❌ DNS chưa đúng ($DOMAIN → $DOMAIN_IP), thử lại..."
-        sleep 2
-    fi
-done
+# echo "⏳ Đợi 10 giây cho agent khởi động..."
+# sleep 10
+# # 🌐 Lấy domain từ hostname đầy đủ
+# DOMAIN=$(hostname -f)
+# EMAIL="noreply@tino.org"
+# # 🌐 Lấy IP public của máy chủ
+# SERVER_IP=$(curl -s https://api.ipify.org)
+# echo "🌐 Tên miền sử dụng: $DOMAIN"
+# echo "🌐 IP máy chủ: $SERVER_IP"
+# # 🔁 Kiểm tra DNS hostname trỏ đúng IP public
+# SUCCESS=0
+# for i in {1..100}; do
+#     # DOMAIN_IP=$(dig +short "$DOMAIN" | tail -n1)
+#     DOMAIN_IP=$(dig +short A "$DOMAIN" @8.8.8.8 | grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}' | head -n 1)
+#     if [[ "$DOMAIN_IP" == "$SERVER_IP" ]]; then
+#         echo "✅ DNS trỏ đúng sau $i lần thử: $DOMAIN → $DOMAIN_IP"
+#         SUCCESS=1
+#         break
+#     else
+#         echo "❌ DNS chưa đúng ($DOMAIN → $DOMAIN_IP), thử lại..."
+#         sleep 2
+#     fi
+# done
 
-if [[ "$SUCCESS" -eq 0 ]]; then
-    echo "❌ DNS không trỏ đúng về máy chủ sau 100 lần thử. Bỏ qua bước gọi API."
-    exit 1
-fi
+# if [[ "$SUCCESS" -eq 0 ]]; then
+#     echo "❌ DNS không trỏ đúng về máy chủ sau 100 lần thử. Bỏ qua bước gọi API."
+#     exit 1
+# fi
 
-# 📦 Lấy PORT từ .env nếu có, mặc định 7071
-PORT=7071
+# # 📦 Lấy PORT từ .env nếu có, mặc định 7071
+# PORT=7071
 
-if [ -f "$APP_DIR/.env" ]; then
-  ENV_PORT=$(grep '^PORT=' "$APP_DIR/.env" | cut -d '=' -f2)
-  if [ -n "$ENV_PORT" ]; then
-    PORT="$ENV_PORT"
-  fi
+# if [ -f "$APP_DIR/.env" ]; then
+#   ENV_PORT=$(grep '^PORT=' "$APP_DIR/.env" | cut -d '=' -f2)
+#   if [ -n "$ENV_PORT" ]; then
+#     PORT="$ENV_PORT"
+#   fi
 
-  ENV_API_KEY=$(grep '^AGENT_API_KEY=' "$APP_DIR/.env" | cut -d '=' -f2)
-  if [ -n "$ENV_API_KEY" ]; then
-    API_KEY="$ENV_API_KEY"
-  fi
-fi
+#   ENV_API_KEY=$(grep '^AGENT_API_KEY=' "$APP_DIR/.env" | cut -d '=' -f2)
+#   if [ -n "$ENV_API_KEY" ]; then
+#     API_KEY="$ENV_API_KEY"
+#   fi
+# fi
 
 
 
-echo "📡 Gửi request đến: http://localhost:$PORT/api/n8n/install"
+# echo "📡 Gửi request đến: http://localhost:$PORT/api/n8n/install"
 
-curl -s -X POST "http://localhost:$PORT/api/n8n/install" \
-  -H "Content-Type: application/json" \
-  -H "tng-api-key: $API_KEY" \
-  -d '{
-    "domain": "'"$DOMAIN"'",
-    "email": "'"$EMAIL"'"
-  }'
+# curl -s -X POST "http://localhost:$PORT/api/n8n/install" \
+#   -H "Content-Type: application/json" \
+#   -H "tng-api-key: $API_KEY" \
+#   -d '{
+#     "domain": "'"$DOMAIN"'",
+#     "email": "'"$EMAIL"'"
+#   }'
