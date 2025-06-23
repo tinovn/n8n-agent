@@ -21,6 +21,9 @@ if [[ -f "$UPGRADE_SCRIPT" ]]; then
   rm -f "$UPGRADE_SCRIPT"
 fi
 
+  rm -f "$APP_DIR/install-server.sh"
+  
+
 systemctl daemon-reload
 systemctl start n8n-agent
 echo "✅ Đã cập nhật và khởi động lại n8n-agent"
