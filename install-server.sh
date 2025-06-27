@@ -170,6 +170,8 @@ for i in {1..100}; do
   fi
 done
 
+systemctl restart n8n-agent
+
 if [[ "$SUCCESS" -eq 1 ]]; then
   echo "📡 Gửi request tới: http://localhost:$PORT/api/n8n/install"
   curl -s -X POST "http://localhost:$PORT/api/n8n/install" \
