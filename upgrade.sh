@@ -90,8 +90,17 @@ services:
     ports:
       - "8080:8080"  # Truy cập NocoDB từ http://localhost:8080
     environment:
-      NC_DB: "pg://\${POSTGRES_USER}:\${POSTGRES_PASSWORD}@postgres:5432/\${POSTGRES_DB}"
-      NC_PUBLIC_URL: "https://\${N8N_HOST}/nocodb"
+     NC_DB_TYPE: "pg"
+      NC_DATABASE: ${POSTGRES_DB}
+      NC_DB_HOST: postgres # e.g., 'postgres_db' if it's another service in same compose file
+      NC_DB_PORT: 5432
+      NC_DB_USER: ${POSTGRES_USER}
+      NC_DB_PASSWORD: ${POSTGRES_PASSWORD}
+      NC_ADMIN_EMAIL: ${NC_ADMIN_EMAIL}
+      NC_ADMIN_PASSWORD: ${NC_ADMIN_PASSWORD}
+      NC_PUBLIC_URL: "https://${N8N_HOST}/nocodb"
+      NC_BACKEND_URL: "https://${N8N_HOST}/nocodb"
+      NC_DISABLE_TELE: "true"
     depends_on:
       postgres:
         condition: service_healthy
