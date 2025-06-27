@@ -161,4 +161,7 @@ else
   echo "ℹ️ NGINX đã có cấu hình /nocodb/"
 fi
 
+cd /opt/n8n
+docker compose down
+docker compose up -d
 
