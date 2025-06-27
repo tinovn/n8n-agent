@@ -93,7 +93,7 @@ services:
       postgres:
         condition: service_healthy
     volumes:
-      - nocodb_data:/usr/app/data  # Lưu cấu hình NocoDB
+      - n8n_nocodb_data:/usr/app/data  # Lưu cấu hình NocoDB
 
 volumes:
   n8n_postgres_data:
