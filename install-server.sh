@@ -101,7 +101,7 @@ if [[ -f "\$UPGRADE_SCRIPT" ]]; then
 fi
 
 systemctl daemon-reload
-systemctl start n8n-agent
+systemctl restart n8n-agent
 echo "✅ Đã cập nhật và khởi động lại n8n-agent"
 EOF
 
