@@ -3,6 +3,8 @@
 # Cấu hình
 COMPOSE_FILE="/opt/n8n/docker-compose.yml"
 BACKUP_PATH="${COMPOSE_FILE}.bak.$(date +%F_%H-%M-%S)"
+ENV_FILE="/opt/n8n/.env"
+N8N_HOST=$(grep '^N8N_HOST=' "$ENV_FILE" | cut -d '=' -f2)
 
 # Backup
 echo "🛡️ Backup file cũ..."
@@ -110,3 +112,43 @@ docker compose up -d
 
 echo "✅ Đã cập nhật docker-compose.yml (dùng biến từ .env)"
 echo "📁 Backup tại: $BACKUP_PATH"
+
+
+
+
+if [ -z "$N8N_HOST" ]; then
+  echo "❌ Không tìm thấy N8N_HOST trong $ENV_FILE"
+  exit 1
+fi
+
+# Đường dẫn file nginx
+NGINX_CONF="/etc/nginx/sites-available/${N8N_HOST}"
+
+# Nếu file tồn tại
+if [ ! -f "$NGINX_CONF" ]; then
+  echo "❌ Không tìm thấy file cấu hình nginx: $NGINX_CONF"
+  exit 1
+fi
+
+# Thêm cấu hình location /nocodb/ nếu chưa có
+if ! grep -q "location /nocodb/" "$NGINX_CONF"; then
+  echo "🌐 Thêm cấu hình reverse proxy cho /nocodb/ vào $NGINX_CONF"
+
+  sed -i '/location \/ {/i \
+    \ \ \ \ location /nocodb/ {\n\
+    \ \ \ \ \ \ proxy_pass http://127.0.0.1:8080/;\n\
+    \ \ \ \ \ \ proxy_http_version 1.1;\n\
+    \ \ \ \ \ \ proxy_set_header Host $host;\n\
+    \ \ \ \ \ \ proxy_set_header X-Real-IP $remote_addr;\n\
+    \ \ \ \ \ \ proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n\
+    \ \ \ \ \ \ proxy_set_header X-Forwarded-Proto $scheme;\n\
+    \ \ \ \ }\
+' "$NGINX_CONF"
+
+  echo "🔄 Reload NGINX..."
+  nginx -t && systemctl reload nginx
+else
+  echo "ℹ️ NGINX đã có cấu hình /nocodb/"
+fi
+
+
