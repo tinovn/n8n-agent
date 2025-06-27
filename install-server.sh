@@ -20,7 +20,7 @@ echo "✅ Bắt đầu cài đặt n8n-agent server..."
 # ========== 1. Cập nhật hệ thống ==========
 echo "🔄 Đang cập nhật hệ thống..."
 apt update && apt upgrade -y
-apt install -y dnsutils curl git ca-certificates gnupg lsb-release
+apt install -y dnsutils curl git ca-certificates gnupg lsb-release jq
 
 # ========== 2. Cài Docker & Compose ==========
 echo "🐳 Cài Docker & Docker Compose Plugin..."
