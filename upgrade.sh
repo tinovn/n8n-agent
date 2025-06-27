@@ -90,7 +90,7 @@ services:
     ports:
       - "8080:8080"  # Truy cập NocoDB từ http://localhost:8080
     environment:
-     NC_DB_TYPE: "pg"
+      NC_DB_TYPE: "pg"
       NC_DATABASE: \${POSTGRES_DB}
       NC_DB_HOST: postgres # e.g., 'postgres_db' if it's another service in same compose file
       NC_DB_PORT: 5432
