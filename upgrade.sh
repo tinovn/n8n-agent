@@ -6,6 +6,9 @@ BACKUP_PATH="${COMPOSE_FILE}.bak.$(date +%F_%H-%M-%S)"
 ENV_FILE="/opt/n8n/.env"
 N8N_HOST=$(grep '^N8N_HOST=' "$ENV_FILE" | cut -d '=' -f2)
 
+#install jq
+sudo apt install jq -y
+
 # Backup
 echo "🛡️ Backup file cũ..."
 cp "$COMPOSE_FILE" "$BACKUP_PATH"
