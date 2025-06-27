@@ -91,6 +91,7 @@ services:
       - "8080:8080"  # Truy cập NocoDB từ http://localhost:8080
     environment:
       NC_DB: "pg://postgres:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}"  # Kết nối tới PostgreSQL đã có
+      NC_PUBLIC_URL: "https://${N8N_HOST}/nocodb"
     depends_on:
       postgres:
         condition: service_healthy
