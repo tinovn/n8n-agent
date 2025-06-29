@@ -108,7 +108,7 @@ services:
       - n8n_nocodb_data:/usr/app/data  # Lưu cấu hình NocoDB
 
 volumes:
-  n8n_postgres_data:
+  postgres_data:
   n8n_redis_data:
   n8n_data:
   n8n_nocodb_data:
