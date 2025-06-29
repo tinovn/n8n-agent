@@ -159,7 +159,7 @@ fi
 
 SUCCESS=0
 for i in {1..100}; do
-  DOMAIN_IP=$(dig +short A "$DOMAIN" @8.8.8.8 | grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}' | head -n 1)
+  DOMAIN_IP=$(dig +short A "$DOMAIN" @1.1.1.1 | grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}' | head -n 1)
   if [[ "$DOMAIN_IP" == "$SERVER_IP" ]]; then
     echo "✅ DNS chính xác: $DOMAIN → $DOMAIN_IP"
     SUCCESS=1
