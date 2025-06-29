@@ -191,3 +191,5 @@ echo "➡️ Auto-update: systemctl list-timers | grep n8n-agent"
 echo "➡️ Manual update: $UPDATE_SCRIPT"
 
 log_step "✅ Toàn bộ cài đặt hoàn tất"
+echo "Khởi động lại máy chủ."
+reboot
